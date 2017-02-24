@@ -1,0 +1,17 @@
+#| % gosh main.scm -i sample/tarai.hir 8 5 0 |#
+
+(def (tarai x y z)
+  (if (<= x y) y
+      (tarai
+       (tarai (- x 1) y z)
+       (tarai (- y 1) z x)
+       (tarai (- z 1) x y)
+       )))
+
+(def (main args)
+  (if (= (length args) 3)
+      (print (tarai (string->number (~ args 0))
+                    (string->number (~ args 1))
+                    (string->number (~ args 2))))
+      (print (length args))
+      ))

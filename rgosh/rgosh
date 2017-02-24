@@ -1,0 +1,36 @@
+#!/usr/bin/env gosh
+
+;;;
+;;; tiny reflective system on Gauche
+;;;
+;; object-level
+;;    /\
+;;    ||
+;;    \/
+;; interpreter (this)
+;;    /\
+;;    ||
+;; meta-interpreter (Gauche)
+
+(use file.util)
+
+(define (_eval form)
+  (eval form #t))
+
+(define (main args)
+  (if (= (length args) 2)
+      (for-each (cut _eval <>) (file->sexp-list (cadr args)))
+      (let loop ()
+        (display "> ")
+        (flush)
+        (let1 x (_eval (read))
+          (unless (eof-object? x)
+            (print x)
+            (loop)))
+        )))
+
+;;;
+;; Local variables:
+;; mode: scheme
+;; end:
+;;;
